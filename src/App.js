@@ -6,7 +6,7 @@ function App() {
     const [input, setInput] = useState('');
     const [isTextAreaDisabled, setIsTextAreaDisabled] = useState(false);
  
-    const [registry, setRegistry] = useState([]);
+    const [registry, setRegistry] = useState([{}]);
     const [tags, setTags] = useState([{tag: 'tag_name', description : 'This is the description for this test tag.'}]);
     const [links, setLinks] = useState([{tag: 'tag_name', description : 'This is the description for this test tag.'}]);
 
@@ -14,7 +14,10 @@ function App() {
         e.preventDefault();
         
         if (input.trim() !== "") {
-            setRegistry([...registry, parseTextArea(input)]);
+            setRegistry([...registry, {
+                reg: parseTextArea(input), 
+                tags: []
+            }]);
         }
         
         const temp = document.querySelector('.top .output');
@@ -60,11 +63,12 @@ function App() {
                     {registry.map((val, i) => (
                         <div className="reg" onClick={(e) => {
 
-                            
+                            console.log("REG "+ i +": ===============================");
+                            console.log(val);
                             // TODO 
                         
                         }} key={i}>
-                            {val}
+                            {val.reg}
                         </div>
                     ))}
                 </div>
