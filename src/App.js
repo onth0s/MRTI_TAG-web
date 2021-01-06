@@ -40,19 +40,19 @@ function App() {
 
     return (
         <div className="container">
-
             <div className="top">
+                <div className="overlay">
+                    <div class="test"></div>
+                </div>
 
                 <div className="output">
                     {registry}
                 </div>
 
                 <div className="column"></div>
-
             </div>
 
             <form onSubmit={handleSubmit}>
-
                     <textarea name="" id="" value={input} onChange={(e) => {
                         setInput(e.target.value);
                     }} onKeyPress={(e) => {
@@ -65,13 +65,7 @@ function App() {
                         handleSubmit(e);
                         document.querySelector('.container form textarea').focus();
                     }}>Long Button Name</button>
-
             </form>
-
-            {/* <div className="overlay">
-
-            </div> */}
-
         </div>
     );
 }
