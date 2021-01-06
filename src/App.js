@@ -20,7 +20,7 @@ function App() {
         const temp = document.querySelector('.top .output');
         temp.scrollTop = temp.scrollHeight;
 
-        console.log(registry);
+        // console.log(registry);
 
         setInput('');
     }
@@ -36,17 +36,10 @@ function App() {
                 arr2.push(<pre key={i}>{arr[i]}</pre>);
             }         
         }
+        // console.log(Math.floor(Math.random() * 10000));
         counter++
 
-        return (
-            <div className="reg" onClick={(e) => {
-
-                console.log(e.currentTarget.innerHTML);
-            
-            }} key={new Date().getTime().toString()}>
-                {arr2}
-            </div>
-        );
+        return (arr2);
     }
 
     return (
@@ -65,7 +58,18 @@ function App() {
                     }}></i>
                 </div>
 
-                <div className="output">{registry}</div>
+                <div className="output">
+                    {registry.map((val, i) => (
+                        <div className="reg" onClick={(e) => {
+
+                            console.log('INDEX: ' + i);
+                            console.log(e.currentTarget.innerHTML);
+                        
+                        }} key={i}>
+                            {val}
+                        </div>
+                    ))}
+                </div>
 
                 <div className="column">
                     <div className="tags">
