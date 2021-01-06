@@ -5,6 +5,8 @@ let counter = 0;
 function App() {
     const [registry, setRegistry] = useState([]);
     const [input, setInput] = useState('');
+    
+    const [isTextAreaDisabled, setIsTextAreaDisabled] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -31,18 +33,23 @@ function App() {
                 arr2.push(<pre key={i}>{arr[i]}</pre>);
             }         
         }
-        counter++;
+        counter++
 
         return <div className="reg" onClick={(e) => {
             console.log(e.target);
-        }}>{arr2}</div>;
+            e.target.style.backgroundColor = 'red';
+        }} key={new Date().getTime().toString()}>{arr2}</div>;
     }
 
     return (
         <div className="container">
             <div className="top">
                 <div className="overlay">
-                    <div class="test"></div>
+                    <p>A message that will be displayed when you fuck something up.</p>
+                    <i className="fas fa-times" onClick={() => {
+                        document.querySelector('.overlay').style.visibility = 'hidden';
+                        setIsTextAreaDisabled(false);
+                    }}></i>
                 </div>
 
                 <div className="output">
@@ -53,18 +60,18 @@ function App() {
             </div>
 
             <form onSubmit={handleSubmit}>
-                    <textarea name="" id="" value={input} onChange={(e) => {
-                        setInput(e.target.value);
-                    }} onKeyPress={(e) => {
-                        if (e.keyCode === 13) {
-                            console.log('this is working');
-                        }
-                    }} spellCheck="false" autoFocus></textarea>
+                <textarea name="" id="" value={input} onChange={(e) => {
+                    setInput(e.target.value);
+                }} onKeyPress={(e) => {
+                    if (e.keyCode === 13) {
+                        console.log('this is working');
+                    }
+                }} spellCheck="false" autoFocus disabled={isTextAreaDisabled}></textarea>
 
-                    <button onClick={(e) => {
-                        handleSubmit(e);
-                        document.querySelector('.container form textarea').focus();
-                    }}>Long Button Name</button>
+                <button onClick={(e) => {
+                    handleSubmit(e);
+                    document.querySelector('.container form textarea').focus();
+                }}>Long Button Name</button>
             </form>
         </div>
     );
