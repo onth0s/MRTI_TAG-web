@@ -3,12 +3,12 @@ import { useState } from 'react';
 let counter = 0;
 
 function App() {
-    const [registry, setRegistry] = useState([]);
     const [input, setInput] = useState('');
-    
     const [isTextAreaDisabled, setIsTextAreaDisabled] = useState(false);
-
-    const [tag, setTag] = useState({});
+ 
+    const [registry, setRegistry] = useState([]);
+    const [tags, setTags] = useState([{tag: 'tag_name', description : 'This is the description for this test tag.'}]);
+    const [links, setLinks] = useState([{tag: 'tag_name', description : 'This is the description for this test tag.'}]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -19,8 +19,6 @@ function App() {
         
         const temp = document.querySelector('.top .output');
         temp.scrollTop = temp.scrollHeight;
-
-        // console.log(registry);
 
         setInput('');
     }
@@ -62,8 +60,8 @@ function App() {
                     {registry.map((val, i) => (
                         <div className="reg" onClick={(e) => {
 
-                            console.log('INDEX: ' + i);
-                            console.log(e.currentTarget.innerHTML);
+                            
+                            // TODO 
                         
                         }} key={i}>
                             {val}
@@ -72,11 +70,18 @@ function App() {
                 </div>
 
                 <div className="column">
+                    <h2>TAGS</h2>
+
                     <div className="tags">
-                        <div>palabra</div>
+                        {/* <div>palabra</div>
                         <div>idea</div>
                         <div>razón</div>
-                        <div>pensar</div>
+                        <div>pensar</div> */}
+                        {tags.map((val, i) => (
+                            <div key={i}>
+                                {val.tag}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
