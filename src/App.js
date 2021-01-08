@@ -1,27 +1,35 @@
 import { useState } from 'react';
 
-let counter = 0;
-
 function App() {
     const [input, setInput] = useState('');
     const [isTextAreaDisabled, setIsTextAreaDisabled] = useState(false);
- 
-    const [registry, setRegistry] = useState([{}]);
-    const [tags, setTags] = useState([{tag: 'tag_name', description : 'This is the description for this test tag.'}]);
-    const [links, setLinks] = useState([{tag: 'tag_name', description : 'This is the description for this test tag.'}]);
+    const [display, setDisplay] = useState(false);
+    
+    const [registry, setRegistry] = useState([]);
+    const [registryIndex, setRegistryIndex] = useState(0);
+    // const [tags, setTags] = useState([{tag: 'tag_name', description : 'This is the description for this test tag.'}]);
+    const [tags, setTags] = useState([{}]);
+    const [tagsInput, setTagsInput] = useState('');
+    
+    const [links, setLinks] = useState([{}]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         
         if (input.trim() !== "") {
-            setRegistry([...registry, {
-                reg: parseTextArea(input), 
-                tags: []
-            }]);
+            if (input[0] === '[') {
+                console.log("SOMETHING");
+            }
+
+            setRegistry([...registry, parseTextArea(input)]);
         }
         
-        const temp = document.querySelector('.top .output');
+        const temp = document.querySelector('.top .output-top');
         temp.scrollTop = temp.scrollHeight;
+
+        let arr_tags = tagsInput.trim().split(' ');
+        console.log(arr_tags);
+        setTagsInput('');
 
         setInput('');
     }
@@ -37,8 +45,6 @@ function App() {
                 arr2.push(<pre key={i}>{arr[i]}</pre>);
             }         
         }
-        // console.log(Math.floor(Math.random() * 10000));
-        counter++
 
         return (arr2);
     }
@@ -60,27 +66,43 @@ function App() {
                 </div>
 
                 <div className="output">
-                    {registry.map((val, i) => (
-                        <div className="reg" onClick={(e) => {
+                    <div className="output-top">
+                        {registry.map((val, i) => (
+                            <div className="reg" onClick={(e) => {
+    
+                                setRegistryIndex(i);
+                                // TODO 
+                            
+                            }} key={i}>
+                                {val}
+                            </div>
+                        ))}
+    
+                    </div>
 
-                            console.log("REG "+ i +": ===============================");
-                            console.log(val);
-                            // TODO 
-                        
-                        }} key={i}>
-                            {val.reg}
-                        </div>
-                    ))}
+                    <div className="tags-display">
+                        {!display ? 
+                            <input type="text" value={tagsInput} onChange={(e) => {
+                                setTagsInput(e.target.value);
+                            }}/> : 
+                            <p style={{backgroundColor: 'white'}}>some text</p>
+                        }
+                    </div>
                 </div>
 
                 <div className="column">
                     <h2>TAGS</h2>
 
+                    <p>REG [{registryIndex}]</p>
+
                     <div className="tags">
                         {/* <div>palabra</div>
                         <div>idea</div>
                         <div>razón</div>
-                        <div>pensar</div> */}
+                        <div>pensar</div>
+                        <div>virtual</div>
+                        <div>verdad</div> */}
+                    
                         {tags.map((val, i) => (
                             <div key={i}>
                                 {val.tag}
@@ -94,9 +116,12 @@ function App() {
                 <textarea name="" id="" value={input} onChange={(e) => {
                     setInput(e.target.value);
                 }} onKeyPress={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
                         handleSubmit(e);
                     }
+                    /* TODO Crear carácteres de entrada al input que desaparezcan
+                        una vez han sido introducidos.
+                    */
                 }} spellCheck="false" autoFocus disabled={isTextAreaDisabled}></textarea>
 
                 <button onClick={(e) => {
