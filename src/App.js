@@ -7,29 +7,34 @@ function App() {
     
     const [registry, setRegistry] = useState([]);
     const [registryIndex, setRegistryIndex] = useState(0);
-    // const [tags, setTags] = useState([{tag: 'tag_name', description : 'This is the description for this test tag.'}]);
+
     const [tags, setTags] = useState([{}]);
     const [tagsInput, setTagsInput] = useState('');
     
-    const [links, setLinks] = useState([{}]);
-
     const handleSubmit = (e) => {
         e.preventDefault();
         
         if (input.trim() !== "") {
-            if (input[0] === '[') {
-                console.log("SOMETHING");
-            }
-
             setRegistry([...registry, parseTextArea(input)]);
-        }
         
-        const temp = document.querySelector('.top .output-top');
-        temp.scrollTop = temp.scrollHeight;
+            const temp = document.querySelector('.top .output-top');
+            temp.scrollTop = temp.scrollHeight;
 
-        let arr_tags = tagsInput.trim().split(' ');
-        console.log(arr_tags);
-        setTagsInput('');
+            // TAGS ============================================================================
+            
+            if (tagsInput.trim() !== '') {
+                let arr_tags = tagsInput.trim().split(' ');
+
+                while (arr_tags.indexOf('') !== -1) {
+                    arr_tags.splice(arr_tags.indexOf(''), 1);
+                }
+
+                console.log(arr_tags);
+            } else {
+                console.log('No tags where introduced.');
+            }
+            setTagsInput('');
+        }
 
         setInput('');
     }
@@ -69,10 +74,10 @@ function App() {
                     <div className="output-top">
                         {registry.map((val, i) => (
                             <div className="reg" onClick={(e) => {
-    
                                 setRegistryIndex(i);
-                                // TODO 
-                            
+
+                                /* TODO Mostrar información útil del registro seleccionado.
+                                */
                             }} key={i}>
                                 {val}
                             </div>
@@ -120,7 +125,7 @@ function App() {
                         handleSubmit(e);
                     }
                     /* TODO Crear carácteres de entrada al input que desaparezcan
-                        una vez han sido introducidos.
+                        una vez hayan sido introducidos.
                     */
                 }} spellCheck="false" autoFocus disabled={isTextAreaDisabled}></textarea>
 
