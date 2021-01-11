@@ -113,6 +113,9 @@
 
     background-color: white;
 }
+.column .tags *:hover {
+    background-color: pink;
+}
 
 .overlay {
     display: flex;

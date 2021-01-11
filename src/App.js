@@ -8,35 +8,29 @@ function App() {
     const [registry, setRegistry] = useState([]);
     const [registryIndex, setRegistryIndex] = useState(0);
 
-    const [tags, setTags] = useState([{}]);
+    const [tags, setTags] = useState([]);
     const [tagsInput, setTagsInput] = useState('');
     
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        if (input.trim() !== "") {
-            setRegistry([...registry, parseTextArea(input)]);
+        if (input.trim() !== "" && tagsInput.trim() !== '') {
+            let arr_tags = tagsInput.trim().split(' ');
+            
+            while (arr_tags.indexOf('') !== -1) {
+                arr_tags.splice(arr_tags.indexOf(''), 1);
+            }
+
+            setTagsInput('');
+            // REGS ============================================================================
+            
+            setRegistry([...registry, {regs: parseTextArea(input), tags: arr_tags}]);
         
             const temp = document.querySelector('.top .output-top');
             temp.scrollTop = temp.scrollHeight;
-
-            // TAGS ============================================================================
             
-            if (tagsInput.trim() !== '') {
-                let arr_tags = tagsInput.trim().split(' ');
-
-                while (arr_tags.indexOf('') !== -1) {
-                    arr_tags.splice(arr_tags.indexOf(''), 1);
-                }
-
-                console.log(arr_tags);
-            } else {
-                console.log('No tags where introduced.');
-            }
-            setTagsInput('');
+            setInput('');
         }
-
-        setInput('');
     }
     
     const parseTextArea = (text) => {
@@ -44,14 +38,14 @@ function App() {
 
         let arr2 = [];
         for (let i = 0; i < arr.length; i++) {
-            if (arr[i] === "") {
+            if (arr[i] === '') {
                 arr2.push(<br key={i}/>);
             } else {
                 arr2.push(<pre key={i}>{arr[i]}</pre>);
             }         
         }
 
-        return (arr2);
+        return arr2;
     }
 
     return (
@@ -75,11 +69,13 @@ function App() {
                         {registry.map((val, i) => (
                             <div className="reg" onClick={(e) => {
                                 setRegistryIndex(i);
+                                console.log(registry[i]);
+                                setTags(val.tags);
 
                                 /* TODO Mostrar información útil del registro seleccionado.
                                 */
                             }} key={i}>
-                                {val}
+                                {val.regs}
                             </div>
                         ))}
     
@@ -89,7 +85,7 @@ function App() {
                         {!display ? 
                             <input type="text" value={tagsInput} onChange={(e) => {
                                 setTagsInput(e.target.value);
-                            }}/> : 
+                            }}  /> : 
                             <p style={{backgroundColor: 'white'}}>some text</p>
                         }
                     </div>
@@ -110,7 +106,7 @@ function App() {
                     
                         {tags.map((val, i) => (
                             <div key={i}>
-                                {val.tag}
+                                {val}
                             </div>
                         ))}
                     </div>
