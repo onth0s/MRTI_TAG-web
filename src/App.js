@@ -1,5 +1,9 @@
 import { useState } from 'react';
 
+window.oncontextmenu = () => {
+    return false;
+}
+
 function App() {
     const [input, setInput] = useState('');
     const [isTextAreaDisabled, setIsTextAreaDisabled] = useState(false);
@@ -15,7 +19,7 @@ function App() {
         e.preventDefault();
         
         if (input.trim() !== "" && tagsInput.trim() !== '') {
-            let arr_tags = tagsInput.trim().split(' ');
+            let arr_tags = tagsInput.trim().toUpperCase().split(' ');
             
             while (arr_tags.indexOf('') !== -1) {
                 arr_tags.splice(arr_tags.indexOf(''), 1);
@@ -25,7 +29,10 @@ function App() {
             // REGS ============================================================================
             
             setRegistry([...registry, {regs: parseTextArea(input), tags: arr_tags}]);
-        
+            
+            setRegistryIndex(registry.length);
+            setTags(arr_tags);
+
             const temp = document.querySelector('.top .output-top');
             temp.scrollTop = temp.scrollHeight;
             
@@ -69,7 +76,6 @@ function App() {
                         {registry.map((val, i) => (
                             <div className="reg" onClick={(e) => {
                                 setRegistryIndex(i);
-                                console.log(registry[i]);
                                 setTags(val.tags);
 
                                 /* TODO Mostrar información útil del registro seleccionado.
@@ -92,9 +98,7 @@ function App() {
                 </div>
 
                 <div className="column">
-                    <h2>TAGS</h2>
-
-                    <p>REG [{registryIndex}]</p>
+                    <p>TAGS - REG [{registryIndex}]</p>
 
                     <div className="tags">
                         {/* <div>palabra</div>
@@ -105,7 +109,20 @@ function App() {
                         <div>verdad</div> */}
                     
                         {tags.map((val, i) => (
-                            <div key={i}>
+                            <div key={i} onClick={(e) => {
+                                let arr = [];
+
+                                registry.forEach(reg => {
+                                    reg.tags.forEach(tag => {
+                                        if (val === tag) {
+                                            arr.push(reg);
+                                        }
+                                    });
+                                });
+
+                                
+
+                            }}>
                                 {val}
                             </div>
                         ))}
